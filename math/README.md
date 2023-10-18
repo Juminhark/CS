@@ -72,3 +72,7 @@
 ## 삼각형의 성질
 
 - 삼각형의 두변의 길이의 합은 나머지한병의 길이보다 크다
+
+## reference
+
+- [코딩수학](https://www.tcpschool.com/codingmath/notation)
