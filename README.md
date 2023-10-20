@@ -1,5 +1,9 @@
 # CS(Computer Science)
 
+## reference
+
+- [Inpa Dev](https://inpa.tistory.com/entry/%F0%9F%91%A9%E2%80%8D%F0%9F%92%BB-%EB%8F%99%EA%B8%B0%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%B8%94%EB%A1%9C%ED%82%B9%EB%85%BC%EB%B8%94%EB%A1%9C%ED%82%B9-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%AC)
+
 ## 개발 면접
 
 ### [js 개발면접 단골 질문](https://www.youtube.com/watch?v=zrzZXhDiiLs)
@@ -191,3 +195,101 @@
     마이크로 서비스는 개별 서비스 단위로 개발하는 방식이고, 모놀리틱 서비스는 하나의 통합된 패키지로 개발하는 방식입니다. 마이크로 서비스는 개별 서비스 단위로 나누어져 있어 해당 부분만 수정 및 배포하기에 좋고, 필요한 부분만 확장하기에도 용이하다는 장점이 있습니다.
 
 ### [면접 질문 정리](https://gmlwjd9405.github.io/tags.html#%EB%A9%B4%EC%A0%91)
+
+## setTimeout() : 비동기 함수, 논블로킹 함수
+
+## Synchronous / Asynchronous
+
+synchronous는 작업 시간을 함께 맞춰서 실행한다는 뜻. 작업을 맞춰 실행한다는 말은 요청한 작업에 대해 완료 여부를 따져 순차대로 처리하는것.
+
+asynchronous는 요청한 작업에 대해 완료 여부를 따지지 않기 때문에 작신의 다음 작업을 그대로 수행한다
+
+![sync-async](/assets/sync_async.png)
+
+## Blocking / Non-Blocking
+
+다른 요청의 작업을 처리하기 위해 현재 작업을 block(차단, 대기)하며 프로세스를 실행하는지의 유무에 따라 blocking/non-blocking으로 나뉜다.
+
+synchronous/asynchronous 가 전체적인 작업에 대한 순서적인 흐름 유무라면, blocking/non-blocking은 전체적인 작업의 흐름 자체를 막는지의 유무로 볼수 있다.
+
+![blocking_non-blocking](/assets/block_nonblock.png)
+
+## 동기/비동기 + 블로킹/논블로킹 조합
+
+- Sync Blocking
+- Async Blocking
+- Sync Non-Bloking
+- Async Non-Blocking
+
+![combination](/assets//combinaion.png)
+
+### sync blocking
+
+```js
+const fs = require('fs'); // 파일 시스템 모듈 불러오기
+
+// 동기적으로 파일 읽기
+const data1 = fs.readFileSync('file1.txt', 'utf8'); // file1을 sync으로 read 함
+console.log(data1); // 파일 내용 출력하고 적절한 처리를 진행
+
+const data2 = fs.readFileSync('file2.txt', 'utf8');
+console.log(data2);
+
+const data3 = fs.readFileSync('file3.txt', 'utf8');
+console.log(data3);
+```
+
+### async non-blocking
+
+```js
+// 비동기적으로 파일 읽기
+const fs = require('fs'); // 파일 시스템 모듈 불러오기
+
+fs.readFile('file.txt', 'utf8', (err, data) => {
+  // 파일 읽기 요청과 콜백 함수 전달
+  if (err) throw err; // 에러 처리
+  console.log(data); // 파일 내용 출력
+});
+
+fs.readFile('file2.txt', 'utf8', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+
+fs.readFile('file3.txt', 'utf8', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+
+console.log('done'); // 작업 완료 메시지 출력
+```
+
+### sync non-blocking
+
+```js
+const fs = require('fs');
+const { promisify } = require('util'); // 유틸리티 모듈 불러오기
+const readFileAsync = promisify(fs.readFile); // fs.readFile 함수를 Promise 객체를 반환하는 함수로 변환
+
+async function readFiles() {
+  try {
+    // Promise.all() 메소드를 사용하여 여러 개의 비동기 작업을 병렬로 처리합니다. (비동기 논블로킹)
+    const [data1, data2, data3] = await Promise.all([
+      readFileAsync('file.txt', 'utf8'), // file.txt 파일을 읽습니다.
+      readFileAsync('file2.txt', 'utf8'), // file2.txt 파일을 읽습니다.
+      readFileAsync('file3.txt', 'utf8'), // file3.txt 파일을 읽습니다.
+    ]);
+
+    // 파일 읽기가 완료되면 data에 파일 내용이 들어옵니다.
+    console.log(data1); // file.txt 파일 내용을 출력합니다.
+    console.log(data2); // file2.txt 파일 내용을 출력합니다.
+    console.log(data3); // file3.txt 파일 내용을 출력합니다.
+
+    // 파일 비교 로직 실행...
+  } catch (err) {
+    throw err;
+  }
+}
+
+readFiles(); // async 함수를 호출
+```
