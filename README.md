@@ -293,3 +293,21 @@ async function readFiles() {
 
 readFiles(); // async 함수를 호출
 ```
+
+## 소프트웨어 용어
+
+parameter : 매개변수
+argument : 인수 : 함수나 서브루틴, 명령을 사용할 때 주어지는 변수
+
+## 컴퓨터의 수체계
+
+- int 는 정수형을 처리하기 위한 변수.
+- 과거 컴퓨터는 cpu는 16bit(2byte)씩 연산
+- 현재 cpu는 34bit(4byte), 64bit(8byte) 를 이용
+- cpu의 연산을 최적화하기 위한 data크기를 설정한것이 변수단위
+
+- 32bit cpu의 처리 비트수.
+- char: 8비트 정수형
+- short: 16비트 정수형
+- int: 32비트 정수형
+- long long: 64비트 정수형
